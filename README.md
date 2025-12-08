@@ -1,121 +1,90 @@
-# MA412_UAVProject_Shruti_SHARMA
-UAV Engine Failure Detection Using Machine Learning Airspeed-Based Classification Using the ALFA Dataset
+#UAV Engine Failure Detection Using Machine Learning
+#Author: Shruti Sharma
+#Course: MA412 – Machine Learning
+#Institution: IPSA Paris
 
-Author: Shruti Sharma Course: MA412 – Machine Learning Institution: IPSA – Paris
+#Overview:
+This project develops a machine learning–based engine failure detection system for Unmanned Aerial Vehicles (UAVs) using airspeed data. The main idea is that engine failures cause early and measurable deviations between the commanded airspeed (what the UAV is instructed to fly at) and the measured airspeed (what the UAV actually achieves)
 
-1. Overview
-This project develops a machine learning–based engine failure detection system for Unmanned Aerial Vehicles (UAVs). The detection uses only airspeed data — commanded (expected speed) and measured (actual speed)extracted from the ALFA aerodynamic flight dataset.
+#Using these deviations, supervised learning models were trained to classify flights as normal or engine-failure scenarios.
 
-Engine failures typically cause measurable and early changes in airspeed. This project demonstrates how those deviations can be learned to predict failures reliably.
+#The project uses the ALFA UAV flight dataset, which contains real logs from stress-tested UAV flights.
 
-2. Objectives
-Detect engine failures using supervised machine learning
+#Objectives:
+-Detect engine failures based solely on airspeed data
+-Compare multiple supervised classification models
+-Evaluate performance using safety-critical metrics, especially recall
+-Implement an adjusted safety threshold to reduce missed failures
+-Provide an interpretable and reproducible ML pipeline
 
-Compare four ML classifiers
+#Dataset: The dataset comes from the ALFA UAV project and contains flight logs in CSV format.
 
-Evaluate performance using safety-critical metrics (recall)
+#Category	Number of flight files:
+Normal flights	9
+Engine failure flights	22
+(The dataset is intentionally imbalanced because it comes from stress-testing experiments where engine failures occur more frequently than in standard operations)
 
-Add a custom safety threshold to reduce missed failures
+#A total of 57,464 data points were used, extracted only from airspeed logs.
+The following columns were used:
+- %time
+- field.commanded
+- field.measured
+- label (0 = normal, 1 = failure)
+- flight_id
 
-Provide a simple, interpretable pipeline for UAV anomaly detection
+#Methods
+- All relevant CSV files were loaded from the processed ALFA dataset.
+- Key airspeed features (commanded and measured) were extracted.
+- Data was labeled based on filenames.
+- StandardScaler was used to normalize features.
+- A stratified train-test split (75/25) was applied to preserve class ratios.
 
-3. Dataset
-The dataset is sourced from the ALFA UAV flight test logs.
+#Models Implemented
+Four supervised learning models were trained and compared:
+- Logistic Regression
+- Support Vector Machine (RBF kernel)
+- Random Forest Classifier
+- Multi-Layer Perceptron (Neural Network)
 
-Category Number of Flight Files Normal flights 9 Engine failure flights 22
+Evaluation metrics included precision, recall, F1-score, confusion matrices, ROC curves, and probability-based analysis.
 
-Total data points: 57,464
+#Results: The Random Forest model achieved the best performance
+- Accuracy: approximately 91 percent
+- Recall for engine failures: approximately 99 percent
+- Recall for normal flights: approximately 58 percent
+(Engine failure recall was prioritised, as missing a failure poses a high safety risk.)
 
-Only airspeed logs were used:
+#Feature Importance
+Random Forest analysis showed:
+- Commanded airspeed: ~65 percent importance
+- Measured airspeed: ~35 percent importance
+The model primarily detects the growing gap between expected and actual speed during failures.
 
-%time
+#Safety Threshold
+The default classification threshold (0.50) was lowered to 0.40 to reduce the chance of missed failures.
+A lower threshold increases recall but also increases false alarms.
+In safety-critical UAV applications, this trade-off is acceptable.
 
-field.commanded
+#Visualisations
+The notebook includes the following plots:
+- Airspeed distributions (normal vs failure)
+- Time-series comparison of commanded vs measured airspeed
+- ROC curves for all models
+- Confusion matrices
+- Precision-recall curve
+- Feature importance chart
+  
+#Repository Structure
+MA412_Project.ipynb – Main notebook with full pipeline
 
-field.measured
+README.md – Documentation
 
-label (0 = normal, 1 = failure)
+#How to Run
 
-flight_id
+1. Open the notebook in Google Colab.
 
-Dataset is imbalanced because ALFA is a stress-testing dataset. Failure flights are intentionally more frequent.
+2. Mount Google Drive.
 
-4. Methods & Preprocessing
-Loaded all airspeed CSV logs
+3. Update dataset paths if needed.
 
-Extracted key columns
-
-Labeled based on filename
-
-Standardized features (StandardScaler)
-
-Train-test split (75–25, stratified)
-
-5. Models Implemented
-Four supervised learning models were trained:
-
-Logistic Regression
-
-Support Vector Machine (RBF kernel)
-
-Random Forest Classifier
-
-Multi-Layer Perceptron (Neural Network)
-
-All models were evaluated using:
-
-Precision
-
-Recall
-
-F1-score
-
-Confusion matrices
-
-ROC curves
-
-6. Results Summary
-Random Forest achieved the best performance:
-
-Accuracy: 91%
-
-Failure Recall: 99% (very important for safety)
-
-Normal Recall: ~58%
-
-Why high recall? Because missing a failure is far worse than a false alarm.
-
-7. Feature Importance
-Random Forest revealed:
-
-Measured airspeed = 35% importance
-
-Commanded airspeed = 65% importance
-
-The model detects the gap between commanded and measured speed, which widens during engine failures.
-
-8. Safety Threshold (0.40)
-The default probability threshold is 0.50. We lowered it to 0.40 to:
-
-Catch borderline failures
-
-Reduce missed detections
-
-Increase recall (safety priority)
-
-This does increase false positives — but that is acceptable in a safety-critical system.
-
-9. Visualizations
-The notebook includes:
-
-Airspeed distributions
-
-Time-series flight plots
-
-ROC curves
-
-Confusion matrices
-
-Precision–recall curve
-
-Feature importance bar chart
+4. Run the cell
