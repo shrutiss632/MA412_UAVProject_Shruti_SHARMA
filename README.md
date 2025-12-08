@@ -4,7 +4,7 @@ UAV Engine Failure Detection Using Machine Learning Airspeed-Based Classificatio
 Author: Shruti Sharma Course: MA412 – Machine Learning Institution: IPSA – Paris
 
 1. Overview
-This project develops a machine learning–based engine failure detection system for Unmanned Aerial Vehicles (UAVs). The detection uses only airspeed data — commanded (expected speed) and measured (actual speed) —extracted from the ALFA aerodynamic flight dataset.
+This project develops a machine learning–based engine failure detection system for Unmanned Aerial Vehicles (UAVs). The detection uses only airspeed data — commanded (expected speed) and measured (actual speed)extracted from the ALFA aerodynamic flight dataset.
 
 Engine failures typically cause measurable and early changes in airspeed. This project demonstrates how those deviations can be learned to predict failures reliably.
 
